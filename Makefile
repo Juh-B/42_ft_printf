@@ -2,7 +2,9 @@
 NAME = libftprintf.a
 
 # .c files
-SRC = ft_printf.c
+SRC = \
+		srcs/ft_printf.c srcs/ft_putchar_fd.c srcs/ft_puthex_fd.c srcs/ft_putnbr_fd.c\
+		srcs/ft_putnbr_unsig_fd.c srcs/ft_putptr.c srcs/ft_putstr_fd.c
 
 # .h files
 INCLUDES = -Iincludes
