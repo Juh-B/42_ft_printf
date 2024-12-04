@@ -6,7 +6,7 @@
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 11:11:28 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/04 13:15:42 by jcosta-b         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:23:33 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int	ft_printf(const char *fmt_str, ...)
 	int		i;
 	size_t	printed;
 
+	if (!fmt_str)
+		return (-1);
 	va_start(args, fmt_str);
 	i = 0;
 	printed = 0;
