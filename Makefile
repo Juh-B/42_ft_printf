@@ -3,8 +3,8 @@ NAME = libftprintf.a
 
 # .c files
 SRC = \
-		srcs/ft_printf.c srcs/ft_putchar_fd.c srcs/ft_puthex_fd.c srcs/ft_putnbr_fd.c\
-		srcs/ft_putnbr_unsig_fd.c srcs/ft_putptr.c srcs/ft_putstr_fd.c
+	srcs/ft_printf.c srcs/printf_putchar.c srcs/printf_puthex.c srcs/printf_putnbr.c\
+	srcs/printf_putnbr_unsig.c srcs/printf_putptr.c srcs/printf_putstr.c
 
 # .h files
 INCLUDES = -Iincludes
