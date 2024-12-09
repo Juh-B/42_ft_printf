@@ -29,11 +29,11 @@ static size_t	printf_specifiers(char flag, unsigned int width, va_list args, cha
 	else if (c == 's')
 		printed += printf_putstr_flag(flag, width, va_arg(args, char *));
 	else if (c == 'd' || c == 'i')
-		printed += printf_putnbr_flag(va_arg(args, int), flag);
+		printed += printf_putnbr_flag(va_arg(args, int), flag, width);
 	else if (c == 'u')
-		printed += printf_putnbr_unsig_flag(va_arg(args, unsigned int), flag);
+		printed += printf_putnbr_unsig_flag(va_arg(args, unsigned int), flag, width);
 	else if (c == 'x' || c == 'X')
-		printed += printf_puthex_flag(va_arg(args, unsigned int), c, flag);
+		printed += printf_puthex_flag(va_arg(args, unsigned int), c, flag, width);
 	else if (c == 'p')
 		printed += printf_putptr(args, c);
 	else if (c == '%')

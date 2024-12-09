@@ -23,13 +23,24 @@ size_t	printf_putnbr_unsig(unsigned int n)
 	return (count);
 }
 
-size_t	printf_putnbr_unsig_flag(unsigned int n, char flag)
+size_t	printf_putnbr_unsig_flag(unsigned int n, char flag, unsigned int width)
 {
 	size_t	count;
+  size_t  dig;
+  long    num;
 
 	count = 0;
-	if (flag == '+' || flag == ' ' || flag == '0')
+  dig = 0;
+  num = n;
+  while (num > 0)
+  {
+    num /= 10;
+    dig++;
+  }
+	if (flag == '+')
 		count += printf_putchar(flag);
+  else if (flag == '0' || flag == ' ' || flag == '-')
+    count += putflags(flag, width, n, dig);
 	count += printf_putnbr_unsig(n);
 	return (count);
 }
