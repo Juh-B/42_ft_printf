@@ -24,32 +24,52 @@ size_t	printf_putstr(char *s)
 	return (i);
 }
 
+size_t  print_space(size_t len, unsigned int width)
+{
+  size_t  printed;
+
+  printed = 0;
+  len = width - len;
+  while (len > 0)
+  {
+    printed += printf_putchar(' ');
+    len--;
+  }
+  return (printed);
+}
+
 size_t	printf_putstr_flag(char flag, unsigned int width, char *s)
 {
-	int	i;
+	size_t	i;
   size_t len;
   size_t  printed;
 
 	if (s == NULL)
-		return (printf_putstr("(null)"));
+		return (printf_putstr(s));
   printed = 0;
   len = 0;
   while (s[len])
 		len++;
-  if (flag == ' ' && len < width)
+  if ((flag == ' ' || flag == '%') && len < width)
+    printed += print_space(len, width);
+  i = 0;
+  if (flag == '.' && width < len)
   {
-    len = width - len;
-    while (len > 0)
+    while (i < width)
     {
-			printed += printf_putchar(flag);
-      len--;
+      printed += printf_putchar(s[i]);
+      i++;
     }
   }
-	i = 0;
-	while (s[i])
+  else
   {
-		printed += printf_putchar(s[i]);
-    i++;
+    while (s[i])
+    {
+      printed += printf_putchar(s[i]);
+      i++;
+    }
   }
+  if (flag == '-' && len < width)
+    printed += print_space(len, width);
 	return (printed);
 }

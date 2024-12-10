@@ -17,3 +17,20 @@ size_t	printf_putchar(char c)
 	write(1, &c, 1);
 	return (1);
 }
+
+size_t	flag_menus(char flag, unsigned int  width)
+{
+  size_t  count;
+
+  count = 0;
+  if (flag == '-')
+  {
+    while ((width - 1) > 0)
+    {
+      count++;
+      width--;
+      printf_putchar(' ');
+    }
+  }
+	return (count);
+}

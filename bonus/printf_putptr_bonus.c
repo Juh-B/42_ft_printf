@@ -12,7 +12,7 @@
 
 #include "../includes/ft_printf.h"
 
-size_t	printf_putptr(va_list args, char c)
+size_t	printf_putptr_flag(va_list args, char c, char flag, unsigned int width)
 {
 	unsigned long	ptr;
 	size_t			printed;
@@ -24,7 +24,7 @@ size_t	printf_putptr(va_list args, char c)
 	else
 	{
 		printed += printf_putstr("0x");
-		printed += printf_puthex_flag(ptr, c, 'a');
+		printed += printf_puthex_flag(ptr, c, flag, width);
 	}
 	return (printed);
 }

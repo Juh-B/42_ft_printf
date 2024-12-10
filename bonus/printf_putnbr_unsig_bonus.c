@@ -39,8 +39,10 @@ size_t	printf_putnbr_unsig_flag(unsigned int n, char flag, unsigned int width)
   }
 	if (flag == '+')
 		count += printf_putchar(flag);
-  else if (flag == '0' || flag == ' ' || flag == '-')
+  else if (flag == '0' || flag == ' ' || flag == '%' || flag == '.')
     count += putflags(flag, width, n, dig);
 	count += printf_putnbr_unsig(n);
+  if (flag == '-')
+    count += putflags(flag, width, n, dig);
 	return (count);
 }

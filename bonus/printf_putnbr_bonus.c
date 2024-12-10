@@ -31,8 +31,10 @@ size_t  putflags(char flag, unsigned int width, int n, size_t dig)
 {
   size_t	count;
 
-  if (flag == '-')
+  if (flag == '-' || flag == '%')
     flag = ' ';
+  else if (flag == '.')
+    flag = '0';
 	count = 0;
   if (dig < width)
   {
@@ -61,8 +63,9 @@ size_t	printf_putnbr_flag(int n, char flag, unsigned int width)
 	// if ((flag == '+' || flag == ' ' || flag == '0') && n >= 0)
 	if (n < 0)
   {
+    if (flag != '.')
+      dig++;
     num = -num;
-    dig++;
     count += printf_putchar(45);
   }
   while (num > 0)
@@ -72,10 +75,14 @@ size_t	printf_putnbr_flag(int n, char flag, unsigned int width)
   }
   if (flag == '+' && n >= 0)
 		count += printf_putchar(flag);
-  else if ((flag == '0' || flag == ' ') && width == 0 && n >= 0)
-    count += printf_putchar(flag);
-  else if (flag == '0' || flag == ' ' || flag == '-')
+  else if (flag == '.' && width == 0 && n == 0)
+    return (0);
+  // else if ((flag == '0' || flag == ' ') && width == 0 && n >= 0)
+  //   count += printf_putchar(flag);
+  else if (flag == '0' || flag == ' ' || flag == '%' || flag == '.')
     count += putflags(flag, width, n, dig);
   count += printf_putnbr(n);
+  if (flag == '-')
+    count += putflags(flag, width, n, dig);
 	return (count);
 }

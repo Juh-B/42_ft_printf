@@ -25,7 +25,10 @@ static size_t	printf_specifiers(char flag, unsigned int width, va_list args, cha
 
 	printed = 0;
 	if (c == 'c')
+  {
 		printed += printf_putchar(va_arg(args, int));
+    printed += flag_menus(flag, width);
+  }
 	else if (c == 's')
 		printed += printf_putstr_flag(flag, width, va_arg(args, char *));
 	else if (c == 'd' || c == 'i')
@@ -35,7 +38,7 @@ static size_t	printf_specifiers(char flag, unsigned int width, va_list args, cha
 	else if (c == 'x' || c == 'X')
 		printed += printf_puthex_flag(va_arg(args, unsigned int), c, flag, width);
 	else if (c == 'p')
-		printed += printf_putptr(args, c);
+		printed += printf_putptr_flag(args, c, flag, width);
 	else if (c == '%')
 		printed += printf_putchar('%');
 	return (printed);
@@ -47,7 +50,7 @@ int	ft_printf(const char *fmt_str, ...)
 	size_t		i;
 	size_t	printed;
   unsigned int  width;
-  size_t w_len;
+  size_t  w_len;
 
 	if (!fmt_str)
 		return (-1);
@@ -62,7 +65,7 @@ int	ft_printf(const char *fmt_str, ...)
       width = 0;
       w_len = 1;
 			if (fmt_str[i] == '+' || fmt_str[i] == ' ' || fmt_str[i] == '#'||
-      fmt_str[i] == '0')
+      fmt_str[i] == '0' || fmt_str[i] == '-' || fmt_str[i] == '.')
 				i++;
       while (ft_isdigit(fmt_str[i]))
       {

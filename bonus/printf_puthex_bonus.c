@@ -1,6 +1,6 @@
 #include "../includes/ft_printf.h"
 
-static size_t	printf_putnbr_base(long long n, const char *base)
+static size_t	printf_putnbr_base(unsigned long n, const char *base)
 {
 	size_t	count;
 
@@ -27,7 +27,7 @@ size_t	printf_puthex_flag(unsigned long n, const char base_specifier, char flag,
   }
   if (flag == '+')
 		count += printf_putchar(flag);
-  else if (flag == '0' || flag == ' ' || flag == '-')
+  else if (flag == '0' || flag == ' ' || flag == '%' || flag == '.')
     count += putflags(flag, width, n, dig);
   else if (flag == '#' && n != 0)
   {
@@ -40,5 +40,11 @@ size_t	printf_puthex_flag(unsigned long n, const char base_specifier, char flag,
 		count += printf_putnbr_base(n, "0123456789ABCDEF");
 	else
 		count += printf_putnbr_base(n, "0123456789abcdef");
+  if (flag == '-')
+  {
+    if (base_specifier == 'p')
+      dig += 2;
+    count += putflags(flag, width, n, dig);
+  }
   return (count);
 }
