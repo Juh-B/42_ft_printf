@@ -77,8 +77,8 @@ size_t	printf_putnbr_flag(int n, char flag, unsigned int width)
 		count += printf_putchar(flag);
   else if (flag == '.' && width == 0 && n == 0)
     return (0);
-  // else if ((flag == '0' || flag == ' ') && width == 0 && n >= 0)
-  //   count += printf_putchar(flag);
+  else if ((flag == '0' || flag == ' ') && width == 0 && n >= 0)
+    count += printf_putchar(flag);
   else if (flag == '0' || flag == ' ' || flag == '%' || flag == '.')
     count += putflags(flag, width, n, dig);
   count += printf_putnbr(n);
