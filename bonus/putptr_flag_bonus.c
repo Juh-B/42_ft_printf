@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_putchar.c                                   :+:      :+:    :+:   */
+/*   putptr_flag_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 11:11:47 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/04 13:17:53 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/10 17:18:19 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/11 18:09:57 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_printf.h"
+#include "ft_printf_bonus.h"
 
-size_t	printf_putchar(char c)
+size_t	flag_ptr(printf_format spec, va_list args)
 {
-	write(1, &c, 1);
-	return (1);
-}
+	unsigned long	ptr;
+	size_t			printed;
 
-size_t	flag_menus(char flag, unsigned int  width)
-{
-  size_t  count;
-
-  count = 0;
-  if (flag == '-')
-  {
-    while ((width - 1) > 0)
-    {
-      count++;
-      width--;
-      printf_putchar(' ');
-    }
-  }
-	return (count);
+	printed = 0;
+	ptr = va_arg(args, unsigned long);
+	if (ptr == 0)
+		printed += printf_putstr("(nil)");
+	else
+	{
+		printed += printf_putstr("0x");
+		printed += flag_hex(spec, ptr);
+	}
+	return (printed);
 }

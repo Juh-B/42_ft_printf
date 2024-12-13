@@ -1,56 +1,85 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 11:11:28 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/06 19:00:01 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/10 17:17:12 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/12 16:10:04 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_printf.h"
+#include "ft_printf_bonus.h"
 
-int	ft_isdigit(int c)
-{
-	if (c >= '0' && c <= '9')
-		return (1);
-	return (0);
-}
-
-static size_t	printf_specifiers(char flag, unsigned int width, va_list args, char c)
+static size_t	printf_spec(printf_format spec, va_list args)
 {
 	size_t	printed;
 
 	printed = 0;
-	if (c == 'c')
-  {
+	if (spec.spec == 'c')
+	{
 		printed += printf_putchar(va_arg(args, int));
-    printed += flag_menus(flag, width);
-  }
-	else if (c == 's')
-		printed += printf_putstr_flag(flag, width, va_arg(args, char *));
-	else if (c == 'd' || c == 'i')
-		printed += printf_putnbr_flag(va_arg(args, int), flag, width);
-	else if (c == 'u')
-		printed += printf_putnbr_unsig_flag(va_arg(args, unsigned int), flag, width);
-	else if (c == 'x' || c == 'X')
-		printed += printf_puthex_flag(va_arg(args, unsigned int), c, flag, width);
-	else if (c == 'p')
-		printed += printf_putptr_flag(args, c, flag, width);
-	else if (c == '%')
+		printed += flag_minus(spec);
+	}
+	else if (spec.spec == 's')
+		printed += flag_str(spec, va_arg(args, char *));
+	else if (spec.spec == 'd' || spec.spec == 'i')
+		printed += flag_nbr(spec, va_arg(args, int));
+	else if (spec.spec == 'u')
+		printed += flag_unsnbr(spec, va_arg(args, unsigned int));
+	else if (spec.spec == 'x' || spec.spec == 'X')
+		printed += flag_hex(spec, va_arg(args, unsigned int));
+	else if (spec.spec == 'p')
+		printed += flag_ptr(spec, args);
+	else if (spec.spec == '%')
 		printed += printf_putchar('%');
 	return (printed);
 }
 
+void	init_spec_format(printf_format *spec)
+{
+	spec->flag = '\0';
+	spec->width = 0;
+	spec->prec_flag = '\0';
+	spec->prec_len = 0;
+	spec->spec = '\0';
+}
+
+static int	verfic_flag(va_list args, const char *str, size_t *printed)
+{
+	int	i;
+	printf_format	spec;
+
+	init_spec_format(&spec);
+	i = 0;
+	if (str[i] == '+' || str[i] == ' ' || str[i] == '#' ||
+		str[i] == '0' || str[i] == '-')
+			spec.flag = str[i++];
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		spec.width = (spec.width * 10) + (str[i] - '0');
+		i++;
+	}
+	if (str[i] == '.')
+	{
+		spec.prec_flag = str[i++];
+		while (str[i] >= '0' && str[i] <= '9')
+		{
+			spec.prec_len = (spec.prec_len * 10) + (str[i] - '0');
+			i++;
+		}
+	}
+	spec.spec = str[i];
+	*printed += printf_spec(spec, args);
+	return (i);
+}
+
 int	ft_printf(const char *fmt_str, ...)
 {
-	va_list	args;
-	size_t		i;
-	size_t	printed;
-  unsigned int  width;
-  size_t  w_len;
+	va_list			args;
+	size_t			i;
+	size_t			printed;
 
 	if (!fmt_str)
 		return (-1);
@@ -62,25 +91,11 @@ int	ft_printf(const char *fmt_str, ...)
 		if (fmt_str[i] == '%' && fmt_str[i + 1] != '\0')
 		{
 			i++;
-      width = 0;
-      w_len = 1;
-			if (fmt_str[i] == '+' || fmt_str[i] == ' ' || fmt_str[i] == '#'||
-      fmt_str[i] == '0' || fmt_str[i] == '-' || fmt_str[i] == '.')
-				i++;
-      while (ft_isdigit(fmt_str[i]))
-      {
-        width = (width * 10) + (fmt_str[i] - '0');
-		    i++;
-        w_len++;
-      }
-			printed += printf_specifiers(fmt_str[i - w_len], width, args, fmt_str[i]);
+			i += verfic_flag(args, fmt_str + i, &printed);
 			i++;
 		}
 		else
-		{
-			printed += printf_putchar(fmt_str[i]);
-			i++;
-		}
+			printed += printf_putchar(fmt_str[i++]);
 	}
 	va_end(args);
 	return (printed);
