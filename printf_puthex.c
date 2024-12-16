@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_putnbr.c                                    :+:      :+:    :+:   */
+/*   printf_puthex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 11:12:21 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/16 11:40:06 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/02 11:12:02 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/16 11:40:14 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	printf_putnbr(int n)
+static size_t	printf_putnbr_base(unsigned long n, const char *base)
 {
-	long	num;
 	size_t	count;
 
-	num = n;
 	count = 0;
-	if (num < 0)
-	{
-		num = -num;
-		count += printf_putchar(45);
-	}
-	if (num >= 10)
-		count += printf_putnbr(num / 10);
-	count += printf_putchar((num % 10) + '0');
+	if (n >= 16)
+		count += printf_putnbr_base(n / 16, base);
+	count += printf_putchar(base[n % 16]);
 	return (count);
+}
+
+size_t	printf_puthex(unsigned long n, const char base_specifier)
+{
+	if (base_specifier == 'X')
+		return (printf_putnbr_base(n, "0123456789ABCDEF"));
+	else
+		return (printf_putnbr_base(n, "0123456789abcdef"));
 }

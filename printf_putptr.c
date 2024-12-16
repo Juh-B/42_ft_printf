@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printf_putnbr.c                                    :+:      :+:    :+:   */
+/*   printf_putptr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 11:12:21 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/16 11:40:06 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/02 11:13:40 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/16 11:40:02 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-size_t	printf_putnbr(int n)
+size_t	printf_putptr(va_list args, char c)
 {
-	long	num;
-	size_t	count;
+	unsigned long	ptr;
+	size_t			printed;
 
-	num = n;
-	count = 0;
-	if (num < 0)
+	printed = 0;
+	ptr = va_arg(args, unsigned long);
+	if (ptr == 0)
+		printed += printf_putstr("(nil)");
+	else
 	{
-		num = -num;
-		count += printf_putchar(45);
+		printed += printf_putstr("0x");
+		printed += printf_puthex(ptr, c);
 	}
-	if (num >= 10)
-		count += printf_putnbr(num / 10);
-	count += printf_putchar((num % 10) + '0');
-	return (count);
+	return (printed);
 }

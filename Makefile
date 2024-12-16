@@ -2,17 +2,20 @@
 NAME = libftprintf.a
 
 # .c files
+# SRC = \
+# 	srcs/ft_printf.c srcs/printf_putchar.c srcs/printf_puthex.c srcs/printf_putnbr.c\
+# 	srcs/printf_putnbr_unsig.c srcs/printf_putptr.c srcs/printf_putstr.c
 SRC = \
-	srcs/ft_printf.c srcs/printf_putchar.c srcs/printf_puthex.c srcs/printf_putnbr.c\
-	srcs/printf_putnbr_unsig.c srcs/printf_putptr.c srcs/printf_putstr.c
+	ft_printf.c printf_putchar.c printf_puthex.c printf_putnbr.c\
+	printf_putnbr_unsig.c printf_putptr.c printf_putstr.c
 
 # .c files from bonus
 SRC_BONUS = \
-	bonus/ft_printf_bonus.c bonus/putchar_flag_bonus.c bonus/putstr_flag_bonus.c\
+	bonus/ft_printf_bonus.c bonus/putchar_flag_bonus.c\
+	bonus/putstr_flag_bonus.c bonus/putptr_flag_bonus.c\
 	bonus/putnbr_flag_bonus.c bonus/putnbr_uteis_bonus.c\
-	bonus/putnbr_uns_flag_bonus.c bonus/putnbr_unsig_uteis_bonus.c\
+	bonus/putunbr_flag_bonus.c bonus/putunbr_uteis_bonus.c\
 	bonus/puthex_flag_bonus.c bonus/puthex_uteis_bonus.c\
-	bonus/putptr_flag_bonus.c
 
 # .h files
 INCLUDES = ft_printf.h ft_printf_bonus.h
