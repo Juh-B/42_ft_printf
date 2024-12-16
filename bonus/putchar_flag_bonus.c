@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 17:17:46 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/12 15:05:59 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/16 11:32:32 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/16 11:43:58 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ size_t	printf_putchar(char c)
 	return (1);
 }
 
-size_t	flag_minus(printf_format spec)
+size_t	flag_minus(t_printf spec)
 {
 	size_t	count;
 

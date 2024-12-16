@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 17:17:12 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/12 16:10:04 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/16 11:32:15 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/16 11:47:39 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-static size_t	printf_spec(printf_format spec, va_list args)
+static size_t	printf_spec(t_printf spec, va_list args)
 {
 	size_t	printed;
 
@@ -37,7 +37,7 @@ static size_t	printf_spec(printf_format spec, va_list args)
 	return (printed);
 }
 
-void	init_spec_format(printf_format *spec)
+void	init_spec_format(t_printf *spec)
 {
 	spec->flag = '\0';
 	spec->width = 0;
@@ -46,16 +46,33 @@ void	init_spec_format(printf_format *spec)
 	spec->spec = '\0';
 }
 
+char	*ft_strchr(const char *s, int c)
+{
+	int				i;
+	unsigned char	ch;
+
+	ch = (unsigned char)c;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == ch)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if (ch == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
+}
+
 static int	verfic_flag(va_list args, const char *str, size_t *printed)
 {
-	int	i;
-	printf_format	spec;
+	int			i;
+	t_printf	spec;
 
 	init_spec_format(&spec);
 	i = 0;
-	if (str[i] == '+' || str[i] == ' ' || str[i] == '#' ||
-		str[i] == '0' || str[i] == '-')
-			spec.flag = str[i++];
+	if (ft_strchr("+-# 0", str[i]))
+		spec.flag = str[i++];
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		spec.width = (spec.width * 10) + (str[i] - '0');
@@ -77,9 +94,9 @@ static int	verfic_flag(va_list args, const char *str, size_t *printed)
 
 int	ft_printf(const char *fmt_str, ...)
 {
-	va_list			args;
-	size_t			i;
-	size_t			printed;
+	va_list	args;
+	size_t	i;
+	size_t	printed;
 
 	if (!fmt_str)
 		return (-1);

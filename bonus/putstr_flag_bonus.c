@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcosta-b <jcosta-b@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 17:18:30 by jcosta-b          #+#    #+#             */
-/*   Updated: 2024/12/12 16:07:03 by jcosta-b         ###   ########.fr       */
+/*   Created: 2024/12/16 11:32:45 by jcosta-b          #+#    #+#             */
+/*   Updated: 2024/12/16 12:02:00 by jcosta-b         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ size_t	printf_putstr(char *s)
 	return (i);
 }
 
-static size_t	verif_space(printf_format spec, size_t len)
+static size_t	put_space(t_printf spec, size_t len, char *s)
 {
 	size_t	printed;
 
 	printed = 0;
-	if(spec.prec_flag == '.' && spec.width > spec.prec_len)
+	if (spec.prec_flag == '.' && s == NULL)
+		len = spec.width;
+	else if (spec.prec_flag == '.' && spec.prec_len <= len)
 		len = spec.width - spec.prec_len;
 	else
 		len = spec.width - len;
@@ -41,19 +43,21 @@ static size_t	verif_space(printf_format spec, size_t len)
 	return (printed);
 }
 
-static size_t	putstr_prec(printf_format spec, size_t len, char *s)
+static size_t	putstr_prec(t_printf spec, size_t len, char *s)
 {
 	size_t	printed;
 	size_t	i;
 
 	i = 0;
 	printed = 0;
+	if (s == NULL && spec.prec_flag != '.')
+		return (printf_putstr(s));
 	if (spec.prec_flag == '.' && spec.prec_len < len)
 	{
 		while (i < spec.prec_len)
 			printed += printf_putchar(s[i++]);
 	}
-	else
+	else if (s != NULL)
 	{
 		while (s[i])
 			printed += printf_putchar(s[i++]);
@@ -61,22 +65,39 @@ static size_t	putstr_prec(printf_format spec, size_t len, char *s)
 	return (printed);
 }
 
-size_t	flag_str(printf_format spec, char *s)
+static size_t	verif_space(t_printf spec, char *s, size_t len)
+{
+	size_t	printed;
+
+	printed = 0;
+	if (s == NULL && spec.width > 6)
+		printed += put_space(spec, len, s);
+	else if ((len < spec.width || (len - spec.prec_len) < spec.width))
+		printed += put_space(spec, len, s);
+	return (printed);
+}
+
+size_t	flag_str(t_printf spec, char *s)
 {
 	size_t	len;
 	size_t	printed;
 
-	if (s == NULL)
-		return (printf_putstr(s));
 	printed = 0;
 	len = 0;
-	while (s[len])
-		len++;
-
-	if ((spec.flag == ' ' || spec.flag == '\0') && len < spec.width)
-		printed += verif_space(spec, len);
+	if (s == NULL)
+	{	
+		if (spec.prec_flag != '.')
+			len = 6;
+	}
+	else
+	{
+		while (s[len])
+			len++;
+	}
+	if (spec.flag == ' ' || spec.flag == '\0')
+		printed += verif_space(spec, s, len);
 	printed += putstr_prec(spec, len, s);
-	if (spec.flag == '-' && len < spec.width)
-		printed += verif_space(spec, len);
+	if (spec.flag == '-')
+		printed += verif_space(spec, s, len);
 	return (printed);
 }
