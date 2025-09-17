@@ -12,9 +12,13 @@
 	<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Juh-B/42_ft_printf?color=green" />
 </p>
 
-This project is part of the 42 School curriculum and its goal was to **reimplement the standard C `printf` function**. It provided hands-on experience with **variadic functions**, format specifiers, and robust string and number formatting.  
+This project is part of the 42 School curriculum and its goal was to **reimplement the standard C `printf` function**.  
 
-  The result is a fully functional `ft_printf`, mimicking the behavior of the original `printf` with strong focus on **code structure, extensibility, and reliability**.
+The `printf` function in C is used to format and print data to the standard output.  
+It allows developers to display text, numbers, characters, and memory addresses using **format specifiers** (such as `%s`, `%d`, `%x`, etc.), while also supporting features like width, precision, and flags for fine control over the output.  
+
+Through this project, I gained hands-on experience with **variadic functions**, format parsing, and robust string and number formatting.  
+The result is a fully functional `ft_printf`, mimicking the behavior of the original `printf` with strong focus on **code structure, extensibility, and reliability**.
 
 
 ## Tech Stack
@@ -25,7 +29,6 @@ This project is part of the 42 School curriculum and its goal was to **reimpleme
 - **Version Control:** Git
 - **Output:** `libftprintf.a` (static library)
 - **Allowed Functions:** `malloc`, `free`, `write`, `va_start`, `va_arg`, `va_copy`, `va_end`  
-- **Integration:** Can be added to `Libft` for future use in other projects  
 
 
 ## Installation
